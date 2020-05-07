@@ -1,0 +1,14 @@
+<config>
+    <instance>
+        <image name = "diplom.jpg" centerW = "750" save = "садик" folder="садик" file="фио"/>
+        <table name="diplom.csv">
+            <text column = "награждается" y ="700"/>
+            <text column = "фио" y ="800"/>
+            <text column = "садик" y ="900"/>
+            <text column = "место" y ="1100"/>
+            <text column = "номинация" y ="1200"/>
+            <text column = "возраст" y ="1300"/>
+            <text column = "педагог" y ="1400"/>
+        </table>
+    </instance>
+</config>
