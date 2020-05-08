@@ -20,7 +20,7 @@ if __name__ == "__main__":
             textesXML = tableXML.findall('text')
             for textXML in textesXML:
                 text = row[textXML.attrib['column']]
-                lines = textwrap.wrap(text, width=45)
+                lines = textwrap.wrap(text, int(textXML.attrib.get('width', 45)))
                 h = 50
                 for indLine in range(len(lines)):
                     textW, textH = draw.textsize(lines[indLine], font)
@@ -36,4 +36,6 @@ if __name__ == "__main__":
             )
             if not os.path.exists(path): 
                 os.makedirs(path)
-            img.save(os.path.join(path , row[imgXML.attrib['file']] + '.jpg'))
+            name = os.path.join(path , row[imgXML.attrib['file']] + '.jpg')
+            print(name)
+            img.save(name)
