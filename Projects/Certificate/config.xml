@@ -1,0 +1,10 @@
+<config>
+    <instance>
+        <image name = "certificate.jpg" centerW = "800" folder="Учреждение" file="Фамилия Имя "/>
+        <table name="certificate.csv">
+            <text column = "Фамилия Имя " y ="450"/>
+            <text column = "Учреждение" y ="550"/>
+            <text column = "Педагог" y ="750"/>
+        </table>
+    </instance>
+</config>
