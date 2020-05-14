@@ -7,3 +7,6 @@
 pip install Pillow
 pip install pandas
 ```
+Для запуска генерации необходимо в первый параметр передать имя директории проекта, например:
+
+`py main.py Diplom`
