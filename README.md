@@ -3,5 +3,7 @@
 
 Перед запуском необходимо установить слудующие модули
 
+```
 pip install Pillow
 pip install pandas
+```
