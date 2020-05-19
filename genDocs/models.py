@@ -12,11 +12,11 @@ class Project(models.Model):
         verbose_name = 'Проект'
         verbose_name_plural = 'Проекты'
 
-class Text(models.Model):
+class Column(models.Model):
     table = models.ForeignKey(Project, on_delete = models.CASCADE)
     column = models.CharField('Имя столбца значения из которого будут рисоваться на шаблонном изображении', max_length=200)
     y = models.IntegerField('Отступ от верхнего края изображения')
 
     class Meta:
-        verbose_name = 'Текст'
-        verbose_name_plural = 'Тексты'
+        verbose_name = 'Столбец'
+        verbose_name_plural = 'Столбцы'
