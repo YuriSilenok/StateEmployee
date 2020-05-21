@@ -5,6 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Удалить лишние ветки",
+            "type": "python",
+            "request": "launch",
+            "program": "gh.py",
+            "console": "integratedTerminal"
+        },
+        {
             "name": "Diplom",
             "type": "python",
             "request": "launch",
