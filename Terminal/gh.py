@@ -22,7 +22,7 @@ for branch in repo.get_branches():
     if del_branch:
         del_branch_list.append(branch.name)
 if del_branch_list:
-    issue = repo.create_issue(title="Нарушено правило именования веток",body=str(del_branch_list))
+    issue = repo.create_issue(title='Нарушено правило именования веток', body=str(del_branch_list))
     issue.add_to_assignees(TEAMLEADS)
 
 for issue in repo.get_issues():
