@@ -4,5 +4,5 @@ def index(request):
     return HttpResponse('Привет, привет !')
 
     
-def test(request):
+def new(request):
     return HttpResponse('Привет, тест!')

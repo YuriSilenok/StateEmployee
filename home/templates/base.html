@@ -3,19 +3,19 @@
 <html>
  <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>Бюджетник</title>
+  <title>{% block title %}Бюджетник{% endblock %}</title>
   <link rel="stylesheet" href="{% static 'css/styles.css' %}">
  </head>
  <body>
   <div id="container">
    <div id="header">Бесплатные программы ускоряющие работу</div>
-   <div id="sidebar">
-    <li><a href="#">Генератор документов</a>
-   </div>
+   <div id="sidebar"><li><a href="{% url 'home:gendocs' %}">Генератор документов</a></div>
    <div id="aside">Под банеры</div>
    <div id="content">
+    {% block content %}
        Здесь будет общая информация о реcурсе.
        Пользователь должен иметь возможность выбрать утилиту с левой панели из ненумеровнного списка.
+    {% endblock %}
    </div>
    <div id="footer">
        Тут должна быть контактная информация.
