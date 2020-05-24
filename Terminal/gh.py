@@ -4,13 +4,12 @@
 from github import Github
 from datetime import datetime
 
-USERNAME = 'USERNAME'
-PASSWORD = 'PASSWORD'
+TOKEN = 'TOKEN'
 ORG = 'Students-of-the-city-of-Kostroma'
 REPO = 'trpo_automation'
 TEAMLEADS = ['Svyat935','urec-programmec', 'avilova']
 
-githib = Github(USERNAME, PASSWORD)
+githib = Github(TOKEN)
 org = githib.get_organization(ORG)
 repo = org.get_repo(REPO)
 
@@ -25,7 +24,7 @@ for branch in repo.get_branches():
         del_branch_list.append(branch.name)
 if del_branch_list:
     print('Нарушено правило именования веток', del_branch_list)
-    issue = repo.create_issue(title='Нарушено правило именования веток',body=str(del_branch_list))
+    issue = repo.create_issue(title = 'Нарушено правило именования веток', body = str(del_branch_list))
     issue.add_to_assignees(TEAMLEADS)
 
 for issue in repo.get_issues(state='open'):
