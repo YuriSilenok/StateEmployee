@@ -9,7 +9,7 @@ TOKEN = 'TOKEN'
 ORG = 'Students-of-the-city-of-Kostroma'
 REPO = 'trpo_automation'
 TEAMLEADS = ['Svyat935', 'urec-programmec', 'avilova']
-MILESTONES_PATTERN = r'Sprint \d{1,2} \(18-(IS|VT)bo-[12][ab]\)'
+MILESTONES_PATTERN = r'(Backlog|Sprint \d{1,2} \(18-(IS|VT)bo-[12][ab]\))'
 
 githib = Github(TOKEN)
 org = githib.get_organization(ORG)
@@ -45,7 +45,7 @@ for issue in repo.get_issues(state='open'):
 
 incorect_milestones = []
 for milestone in repo.get_milestones(state='open'):
-    if not(milestone.title in 'Backlog' or re.match(MILESTONES_PATTERN, milestone.title)):
+    if not  re.match(MILESTONES_PATTERN, milestone.title):
         incorect_milestones.append(milestone.title)
 if incorect_milestones:
     print('Нарушено правило именования вех', incorect_milestones)
