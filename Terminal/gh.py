@@ -26,8 +26,11 @@ for branch in repo.get_branches():
         incorect_branch.append(branch.name)
 if incorect_branch:
     print('Нарушено правило именования веток', incorect_branch)
-    issue = repo.create_issue(title = 'Нарушено правило именования веток', body = str(incorect_branch))
-    issue.add_to_assignees(TEAMLEADS)
+    issue = repo.create_issue(
+        title = 'Нарушено правило именования веток', 
+        body = str(incorect_branch),
+        assignees = TEAMLEADS,
+        milestone = 'Backlog')
 
 for issue in repo.get_issues(state='open'):
     if issue.state == 'open' and (datetime.now() - issue.updated_at).days >= 7:
@@ -51,5 +54,7 @@ if incorect_milestones:
     print('Нарушено правило именования вех', incorect_milestones)
     issue = repo.create_issue(
         title = 'Нарушено правило именования вех', 
-        body = str(incorect_milestones) + '\nПриведите имена вех в соответсвии с регулярным выражением `' + MILESTONES_PATTERN + '`')
-    issue.add_to_assignees(TEAMLEADS)
+        body = str(incorect_milestones) + '\nПриведите имена вех в соответсвии с регулярным выражением `' + MILESTONES_PATTERN + '`',
+        assignees = TEAMLEADS,
+        milestone = 'Backlog')
+        
