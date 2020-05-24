@@ -8,7 +8,7 @@ import re
 TOKEN = 'TOKEN'
 ORG = 'Students-of-the-city-of-Kostroma'
 REPO = 'trpo_automation'
-TEAMLEADS = ['Svyat935', 'urec-programmec', 'avilova']
+TEAMLEADS = ['Svyat935', 'urec-programmec', 'avilova', 'AnastasiVokhmyanina28']
 MILESTONES_PATTERN = r'(Backlog|Sprint \d{1,2} \(18-(IS|VT)bo-[12][ab]\))'
 
 githib = Github(TOKEN)
