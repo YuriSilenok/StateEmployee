@@ -70,7 +70,10 @@ else:
         for issue in repo.get_issues(creator='YuriSilenok'):
             if issue.title == 'Нарушено правило именования вех':
                 if issue.state == 'close':
-                    issue.edit(state='open')
+                    issue.edit(
+                        state='open',
+                        assignees = TEAMLEADS
+                    )
                 issue.create_comment(str(incorect_milestones) + '\n\nПриведите имена вех в соответсвии с регулярным выражением \n`' + MILESTONES_PATTERN + '`')
                 faind = True
                 break
