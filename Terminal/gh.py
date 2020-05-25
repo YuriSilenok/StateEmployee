@@ -73,6 +73,7 @@ else:
                     issue.edit(state='open')
                 issue.create_comment(str(incorect_milestones) + '\n\nПриведите имена вех в соответсвии с регулярным выражением \n`' + MILESTONES_PATTERN + '`')
                 faind = True
+                break
         if not faind:
             issue = repo.create_issue(
                 title = 'Нарушено правило именования вех', 
