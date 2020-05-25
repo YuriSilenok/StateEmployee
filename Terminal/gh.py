@@ -66,12 +66,21 @@ else:
             incorect_milestones.append(milestone.title)
     if incorect_milestones:
         print('Нарушено правило именования вех', incorect_milestones)
-        issue = repo.create_issue(
-            title = 'Нарушено правило именования вех', 
-            body = str(incorect_milestones) + '\n\nПриведите имена вех в соответсвии с регулярным выражением \n`' + MILESTONES_PATTERN + '`',
-            assignees = TEAMLEADS,
-            milestone = backlog_milestone
-        )
+        faind = False
+        for issue in repo.get_issues(creator='YuriSilenok'):
+            if issue.title == 'Нарушено правило именования вех':
+                if issue.state == 'close':
+                    issue.edit(state='open')
+                issue.create_comment(str(incorect_milestones) + '\n\nПриведите имена вех в соответсвии с регулярным выражением \n`' + MILESTONES_PATTERN + '`')
+                faind = True
+        if not faind:
+            issue = repo.create_issue(
+                title = 'Нарушено правило именования вех', 
+                body = str(incorect_milestones) + '\n\nПриведите имена вех в соответсвии с регулярным выражением \n`' + MILESTONES_PATTERN + '`',
+                assignees = TEAMLEADS,
+                milestone = backlog_milestone
+            )
+
 
 
      
