@@ -84,6 +84,13 @@ else:
                 assignees = TEAMLEADS,
                 milestone = backlog_milestone
             )
+    else:
+        for issue in repo.get_issues(state ='open', creator='YuriSilenok'):
+            if issue.title == 'Нарушено правило именования вех':
+                issue.create_comment('Все вехи корректны')
+                issue.edit(
+                    state='close'
+                )
 
 
 
