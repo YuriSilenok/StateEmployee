@@ -1,6 +1,5 @@
 function load_img(input){
-    console.log(input)
-  if (input.files && input.files[0]) {
+    if (input.files && input.files[0]) {
         var reader = new FileReader();
         reader.onload = function (e) {
             var canvas = document.getElementById('img'),
@@ -13,13 +12,39 @@ function load_img(input){
                 canvas.style.display = "block"
             }
             img.src = e.target.result;
-            console.log('done')
         }
+        reader.onerror = function(ex) {console.log(ex);};
         reader.readAsDataURL(input.files[0]);
     }
 }
 document.addEventListener("DOMContentLoaded", function() {
-    document.getElementById('file_img').addEventListener("change", function(){
-        load_img(this);
-    },false);
+    document.getElementById('file_img').addEventListener("change", function(){load_img(this);},false);
+});
+
+function load_table(input){
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            var workbook = XLSX.read(e.target.result,{type: 'binary'});
+            var sheetsDEV = document.getElementById('sheets');
+            sheetsDEV.innerHTML = '';
+            workbook.SheetNames.forEach(function(sheetName) {
+                var sheetINPUT = document.createElement('input');
+                sheetINPUT.setAttribute('name','sheet');
+                sheetINPUT.setAttribute('type','radio');
+                var sheetDIV = document.createElement('div');
+                sheetDIV.append(sheetINPUT);
+                sheetDIV.innerHTML = sheetDIV.innerHTML + sheetName;
+                sheetsDEV.append(sheetDIV);
+            })
+            sheetsDEV.addEventListener("change",function(){
+                console.log(this)
+            })
+        }
+        reader.onerror = function(ex) {console.log(ex);};
+        reader.readAsBinaryString(input.files[0]);
+    }  
+}
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById('file_table').addEventListener("change", function(){load_table(this);},false);
 });

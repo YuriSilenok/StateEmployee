@@ -6,14 +6,15 @@
     <title>{% block title %}Государственный служащий{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <script type="text/javascript" src="{% static 'js/code.js' %}"></script>
+    {% block js %}{% endblock %}
  </head>
  <body>
     <div id="container">
-    <div id="header">{% block header %}{% endblock %}</div>
-     <div id="sidebar">{% block sidebar %}{% endblock %}</div>
-     <div id="aside">{% block aside %}{% endblock %}</div>
-     <div id="content">{% block content %}{% endblock %}</div>
-     <div id="footer">{% block footer %}{% endblock %}</div>
+        <div id="header">{% block header %}{% endblock %}</div>
+        <div id="sidebar">{% block sidebar %}{% endblock %}</div>
+        <div id="aside">{% block aside %}{% endblock %}</div>
+        <div id="content">{% block content %}{% endblock %}</div>
+        <div id="footer">{% block footer %}{% endblock %}</div>
     </div> 
  </body>
 </html>

@@ -1,9 +1,20 @@
 {% extends 'base.html' %}
+
 {% block title %}Генератор документов{% endblock %}
-{% block header %}Генератор документов{% endblock %}
-{% block sidebar %}
-<li>Загрузить изображение<input type='file' id='file_img'>
+
+{% block js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.1/jszip.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.1/xlsx.js"></script>
 {% endblock %}
+
+{% block header %}Генератор документов{% endblock %}
+
+{% block sidebar %}
+<li>Загрузить изображение<input type='file' id='file_img' accept=".jpg, .jpeg, .png"></li>
+<li>Загрузить таблицу<input type='file' id='file_table' accept=".xlsx"></li>
+<div id="sheets"></div>
+{% endblock %}
+
 {% block content %}
 <canvas id="img" style="display:none"></canvas>
 {% endblock %}
