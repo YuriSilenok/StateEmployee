@@ -19,12 +19,13 @@ body {
     color: #ffe; /* Цвет текста */
    }
    #sidebar {
-    width: 200px; /* Ширина слоя */
+    width: 300px; /* Ширина слоя */
     padding: 10px; /* Отступы вокруг текста */
     float: left; /* Обтекание по правому краю */
    }
    #content {
-    margin:0 220px; /* Отступ слева */
+    margin-left: 320px; /* Отступ слева */
+    margin-right: 220px; /* Отступ справа */
     padding: 10px; /* Поля вокруг текста */
     background: #fff; /* Цвет фона правой колонки */
    }
