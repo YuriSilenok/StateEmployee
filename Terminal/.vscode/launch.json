@@ -30,6 +30,26 @@
             "args": [
                 "Certificate"
             ]
+        },
+        {
+            "name": "Certificate2",
+            "type": "python",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "args": [
+                "Certificate2"
+            ]
+        },
+        {
+            "name": "Diplom2",
+            "type": "python",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "args": [
+                "Diplom2"
+            ]
         }
     ]
 }
