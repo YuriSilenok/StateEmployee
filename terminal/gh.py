@@ -104,7 +104,6 @@ def check_branch_at_update(repo, teamleads):
     for branch in repo.get_branches():
         if branch.name.find('issue-') == 0:
             last_modified = branch.commit.commit.last_modified
-            print(last_modified)
             days = (datetime.now() - datetime.strptime(last_modified, '%a, %d %b %Y %H:%M:%S GMT')).days
             if days > 0 and days % 7 == 0:
                 mess = 'В ветке '+ branch.name +' давно не было активности'
