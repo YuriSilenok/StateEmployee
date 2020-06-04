@@ -36,10 +36,9 @@ if __name__ == "__main__":
                 if text != "":
                     lines = textwrap.wrap(
                         text, 
-                        int(textXML.attrib.get(
-                            'width',
-                            45)))
-                    h = 50
+                        int(textXML.attrib.get('width', 45))
+                    )
+                    spacing = int(textXML.attrib.get('spacing',50))
                     for indLine in range(len(lines)):
                         textSize = int(tableXML.attrib.get('textSize',50))
                         textSize = int(textXML.attrib.get('size', textSize))
@@ -49,18 +48,20 @@ if __name__ == "__main__":
                             encoding='UTF-8')
                         textW, textH = draw.textsize(lines[indLine], font)
                         x = int(textXML.attrib.get('x', centerW - textW / 2))
-                        y = int(textXML.attrib['y']) + indLine * h
+                        y = int(textXML.attrib['y']) + indLine * spacing
+                        color = textXML.attrib.get('color','black')
                         draw.text(
                             (x,y), 
                             lines[indLine], 
-                            fill='black', 
+                            fill=color, 
                             font=font)
+            folder = row[imgXML.attrib['folder']].replace('""','"').replace(' "'," «").replace('" ',"» ").replace('"',"»")
             path = os.path.abspath(
                 os.path.join(
                     PROJECTS,
                     projectName, 
                     'result', 
-                    row[imgXML.attrib['folder']]
+                    folder
                 )
             )
             if not os.path.exists(path): 
