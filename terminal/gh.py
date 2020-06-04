@@ -10,98 +10,144 @@ ORG = 'Students-of-the-city-of-Kostroma'
 REPO = 'trpo_automation'
 TEAMLEADS = ['Svyat935', 'urec-programmec', 'avilova', 'AnastasiVokhmyanina28']
 MILESTONES_PATTERN = r'(Backlog|Sprint \d{1,2} \(18-(IS|VT)bo-[12][ab]\))'
+BRANCHES_PATTERN = r'(master|dev|(merge[_\-])?18-(IS|VT)bo-[12][ab]|issue-\d{1,4})'
 
-githib = Github(TOKEN)
-org = githib.get_organization(ORG)
-repo = org.get_repo(REPO)
+GITHUB = Github(TOKEN)
+ORG = GITHUB.get_organization(ORG)
+REPO = ORG.get_repo(REPO)
 
-for issue in repo.get_issues(state='open'):
-    if issue.state == 'open' and (datetime.now() - issue.updated_at).days >= 7:
-        print('Какие есть обновления по этой задаче?', issue)
-        issue.create_comment('Какие есть обновления по этой задаче?')
-    if issue.body == '':
-        print('Пожалуйста, добавьте описание к этой задаче', issue)
-        issue.create_comment('Пожалуйста, добавьте описание к этой задаче')
-    if issue.milestone is None:
-        print('Пожалуйста, добавьте веху к этой задаче', issue)
-        issue.create_comment('Пожалуйста, добавьте веху к этой задаче')
-    if issue.assignee is None:
-        print('Пожалуйста, добавьте ответсвенного на эту задачу', issue)
-        issue.create_comment('Пожалуйста, добавьте ответсвенного на эту задачу')
-
-backlog_milestone = None
-for milestone in repo.get_milestones(state='open'): 
-    if milestone.title == 'Backlog': 
-        backlog_milestone = milestone
-        break
-
-if backlog_milestone is None:
-    issue = repo.create_issue(
-        title = 'Не найдена веха Backlog', 
+def check_issue(repo):
+    for issue in repo.get_issues():
+        if issue.state == 'open' and (datetime.now() - issue.updated_at).days >= 7:
+            mess = 'Какие есть обновления по этой задаче?'
+            print(mess, issue)
+            issue.create_comment(mess)
+        if issue.body == '':
+            mess = 'Пожалуйста, добавьте описание к этой задаче'
+            print(mess, issue)
+            if issue.state == 'close':
+                issue.edit(
+                    state = 'open'
+                )
+            issue.create_comment(mess)
+        if issue.milestone is None:
+            mess = 'Пожалуйста, добавьте веху к этой задаче'
+            print(mess, issue)
+            if issue.state == 'close':
+                issue.edit(
+                    state = 'open'
+                )
+            issue.create_comment(mess)
+        if issue.assignee is None:
+            mess = 'Пожалуйста, добавьте ответсвенного на эту задачу'
+            print(mess, issue)
+            if issue.state == 'close':
+                issue.edit(
+                    state = 'open'
+                )
+            issue.create_comment(mess)
+def get_backlog_milestone(repo):
+    for milestone in repo.get_milestones():
+        if milestone.title == 'Backlog':
+            if milestone.state == 'close':
+                milestone.edit(state='open')
+            return milestone
+    print('Веха Backlog не найдена')
+    return repo.create_issue(
+        title = 'Не найдена веха Backlog',
         body = 'Добавить веху Backlog',
         assignees = TEAMLEADS
     )
-else:
-    incorect_milestones = []
+def get_incorrect_milestones(repo, milestone_patterns):
+    result = []
     for milestone in repo.get_milestones(state='open'):
-        if not  re.match(MILESTONES_PATTERN, milestone.title):
-            incorect_milestones.append(milestone.title)
-    if incorect_milestones:
-        print('Нарушено правило именования вех', incorect_milestones)
-        faind = False
-        for issue in repo.get_issues(creator='YuriSilenok'):
-            if issue.title == 'Нарушено правило именования вех':
-                if issue.state == 'close':
-                    issue.edit(
-                        state='open',
-                        assignees = TEAMLEADS
-                    )
-                issue.create_comment(str(incorect_milestones) + '\n\nПриведите имена вех в соответсвии с регулярным выражением \n`' + MILESTONES_PATTERN + '`')
-                faind = True
-                break
-        if not faind:
-            issue = repo.create_issue(
-                title = 'Нарушено правило именования вех', 
-                body = str(incorect_milestones) + '\n\nПриведите имена вех в соответсвии с регулярным выражением \n`' + MILESTONES_PATTERN + '`',
-                assignees = TEAMLEADS,
-                milestone = backlog_milestone
-            )
-    else:
-        for issue in repo.get_issues(state ='open', creator='YuriSilenok'):
-            if issue.title == 'Нарушено правило именования вех':
-                issue.create_comment('Все вехи корректны')
-                issue.edit(
-                    state='close'
-                )
-
-    incorect_branch = []
+        if not re.match(milestone_patterns, milestone.title):
+            result.append(milestone.title)
+    if len(result) > 0:
+        print('Найдены некорректные вехи', result)
+    return result
+def get_incorrect_branches(repo, branches_pattern):
+    result = []
     for branch in repo.get_branches():
-        del_branch = True
-        for item in ['master', 'dev', '18-', 'issue-', 'merge']:
-            if branch.name.find(item) == 0:
-                del_branch = False
-                break
-        if del_branch:
-            incorect_branch.append(branch.name)
+        if not re.match(branches_pattern, branch.name):
+            result.append(branch.name)
+    if len(result) > 0:
+         print('Найдены некорректные ветки', result)
+    return result
+def create_comment_for_incorrect(repo, teamleads, title, comment):
+    faind = False
+    for issue in repo.get_issues(creator='YuriSilenok'):
+        if issue.title == title:
+            print('Найдено совпадение', issue)
+            faind = True
+            if issue.assignees != teamleads:
+                print('Назначены тимлиды',teamleads)
+                issue.edit(
+                    assignees = teamleads
+                )
+            if issue.state == 'close':
+                issue.edit(
+                    state='open'
+                )
+            print('Добавлен комментарий', comment)
+            issue.create_comment(comment)
+            break
+    if not faind:
+        print('Создана задача',title, comment)
+        issue = repo.create_issue(
+            title = title,
+            body = comment,
+            assignees = teamleads,
+            milestone = backlog_milestone
+        )
+def check_branch_at_update(repo, teamleads):
+    for branch in repo.get_branches():
         if branch.name.find('issue-') == 0:
-            days = (datetime.now() - datetime.strptime(repo.get_branches()[5].commit.commit.last_modified,'%a, %d %B %Y %I:%M:%S GMT')).days
-            if days >= 7:
-                print('В ветке '+ branch.name +' давно не было активности')
+            last_modified = branch.commit.commit.last_modified
+            print(last_modified)
+            days = (datetime.now() - datetime.strptime(last_modified, '%a, %d %b %Y %H:%M:%S GMT')).days
+            if days > 0 and days % 7 == 0:
+                mess = 'В ветке '+ branch.name +' давно не было активности'
+                print(mess)
                 try:
                     issue_number = int(branch.name[6:])
                     issue = repo.get_issue(issue_number)
-                    issue.create_comment('В ветке '+ branch.name +' давно не было активности')
+                    if issue.state == 'close':
+                        issue.edit(state = 'open')
+                        issue.create_comment('Кажется, вы не удалили ветку '+ branch.name +' и закрыли задачу')
+                    else:
+                        issue.create_comment(mess)
                 except:
                     print('Неправильный формат ветки', branch.name)
-
-    if incorect_branch:
-        print('Нарушено правило именования веток', incorect_branch)
-        issue = repo.create_issue(
-            title = 'Нарушено правило именования веток', 
-            body = str(incorect_branch),
-            assignees = TEAMLEADS,
-            milestone = backlog_milestone
-        )
-
-
-     
+check_issue(
+    repo=REPO
+)
+backlog_milestone = get_backlog_milestone(
+    repo=REPO
+)
+incorrect_milestone = get_incorrect_milestones(
+    repo=REPO,
+    milestone_patterns=MILESTONES_PATTERN
+)
+if len(incorrect_milestone) > 0:
+    create_comment_for_incorrect(
+        repo=REPO,
+        teamleads=TEAMLEADS,
+        title='Нарушено правило именования вех',
+        comment=str(incorrect_milestone) + '\n\nПриведите имена вех в соответсвии с регулярным выражением \n`' + MILESTONES_PATTERN + '`'
+    )
+incorrect_branches = get_incorrect_branches(
+    repo=REPO,
+    branches_pattern=BRANCHES_PATTERN
+)
+if len(incorrect_branches) > 0:
+    create_comment_for_incorrect(
+        repo=REPO,
+        teamleads=TEAMLEADS,
+        title='Нарушено правило именования веток',
+        comment=str(incorrect_branches) + '\n\nПриведите имена веток в соответсвие'
+    )
+check_branch_at_update(
+    repo=REPO,
+    teamleads=TEAMLEADS
+)
