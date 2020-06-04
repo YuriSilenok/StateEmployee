@@ -15,6 +15,10 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById('file_img').addEventListener("change", file_img_input_change,false);
     document.getElementById('file_table').addEventListener("change", file_table_input_change,false);
 });
+function onerror(event){
+    console.log(event);
+}
+//file image
 function file_img_input_change(event){
     console.log(event);
     if (this.files && this.files[0]) {
@@ -40,9 +44,7 @@ function file_img_input_change_reader_onload_img_onload(event){
     context.drawImage(img, 0, 0, canvas.width, canvas.height);
     canvas.style.display = "block"
 }
-function onerror(event){
-    console.log(event);
-}
+//file table
 function file_table_input_change(event){
     console.log(event);
     if (input.files && input.files[0]) {
