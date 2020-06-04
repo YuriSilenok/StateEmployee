@@ -10,13 +10,13 @@
 {% block header %}Генератор документов{% endblock %}
 
 {% block sidebar %}
-<li>Загрузить изображение<input type='file' id='file_img' accept=".jpg, .jpeg, .png"></li>
-<li>Загрузить таблицу<input type='file' id='file_table' accept=".xlsx"></li>
-<div id="sheets"></div>
-<div id="columns"></div>
+<div id="image" class="block">Загрузить изображение<input type='file' id='file_img' accept=".jpg, .jpeg, .png"></div>
+<div id="table" class="block">Загрузить таблицу<input type='file' id='file_table' accept=".xlsx" disabled></div>
+<div id="sheets" class="block"></div>
+<div id="columns" class="block"></div>
 {% endblock %}
 
 {% block content %}
-<canvas id="img" style="display:none"></canvas>
+<canvas id="img">Your browser does not support the HTML 5 Canvas.</canvas>
 {% endblock %}
     
