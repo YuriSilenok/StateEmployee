@@ -42,24 +42,6 @@ if backlog_milestone is None:
         assignees = TEAMLEADS
     )
 else:
-    incorect_branch = []
-    for branch in repo.get_branches():
-        del_branch = True
-        for item in ['master', 'dev', '18-', 'issue-']:
-            if item in branch.name:
-                del_branch = False
-                break
-        if del_branch:
-            incorect_branch.append(branch.name)
-    if incorect_branch:
-        print('Нарушено правило именования веток', incorect_branch)
-        issue = repo.create_issue(
-            title = 'Нарушено правило именования веток', 
-            body = str(incorect_branch),
-            assignees = TEAMLEADS,
-            milestone = backlog_milestone
-        )
-
     incorect_milestones = []
     for milestone in repo.get_milestones(state='open'):
         if not  re.match(MILESTONES_PATTERN, milestone.title):
@@ -70,7 +52,10 @@ else:
         for issue in repo.get_issues(creator='YuriSilenok'):
             if issue.title == 'Нарушено правило именования вех':
                 if issue.state == 'close':
-                    issue.edit(state='open')
+                    issue.edit(
+                        state='open',
+                        assignees = TEAMLEADS
+                    )
                 issue.create_comment(str(incorect_milestones) + '\n\nПриведите имена вех в соответсвии с регулярным выражением \n`' + MILESTONES_PATTERN + '`')
                 faind = True
                 break
@@ -81,7 +66,42 @@ else:
                 assignees = TEAMLEADS,
                 milestone = backlog_milestone
             )
+    else:
+        for issue in repo.get_issues(state ='open', creator='YuriSilenok'):
+            if issue.title == 'Нарушено правило именования вех':
+                issue.create_comment('Все вехи корректны')
+                issue.edit(
+                    state='close'
+                )
 
+    incorect_branch = []
+    for branch in repo.get_branches():
+        del_branch = True
+        for item in ['master', 'dev', '18-', 'issue-', 'merge']:
+            if branch.name.find(item) == 0:
+                del_branch = False
+                break
+        if del_branch:
+            incorect_branch.append(branch.name)
+        if branch.name.find('issue-') == 0:
+            days = (datetime.now() - datetime.strptime(repo.get_branches()[5].commit.commit.last_modified,'%a, %d %B %Y %I:%M:%S GMT')).days
+            if days >= 7:
+                print('В ветке '+ branch.name +' давно не было активности')
+                try:
+                    issue_number = int(branch.name[6:])
+                    issue = repo.get_issue(issue_number)
+                    issue.create_comment('В ветке '+ branch.name +' давно не было активности')
+                except:
+                    print('Неправильный формат ветки', branch.name)
+
+    if incorect_branch:
+        print('Нарушено правило именования веток', incorect_branch)
+        issue = repo.create_issue(
+            title = 'Нарушено правило именования веток', 
+            body = str(incorect_branch),
+            assignees = TEAMLEADS,
+            milestone = backlog_milestone
+        )
 
 
      
