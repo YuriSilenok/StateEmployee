@@ -1,0 +1,16 @@
+<config>
+    <instance>
+        <image name = "WVBFxPP80lg.jpg" centerW = "750" folder="учреждение" file="участник"/>
+        <table name="Masterim_Itog_v_dokumenty - Дипломы.csv">
+            <text column = "место" y ="500"  size="70" color="#547ed1"/>
+            <text column = "конкурс" y ="600" color="#02419e"/>
+            <text column = "название" y ="725" color="#02419e"/>
+            <text column = "номинация" y ="800"/>
+            <text column = "награждается" y ="920"/>
+            <text column = "участник" y ="1000"/>
+            <text column = "участник 2" y ="1060"/>
+            <text column = "участник 3" y ="1120"/>
+            <text column = "учреждение" y ="1200" spacing="70"/>
+        </table>
+    </instance>
+</config>

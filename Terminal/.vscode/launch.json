@@ -5,6 +5,16 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Diplom3",
+            "type": "python",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+            "args": [
+                "Diplom3"
+            ]
+        },
+        {
             "name": "Удалить лишние ветки",
             "type": "python",
             "request": "launch",
