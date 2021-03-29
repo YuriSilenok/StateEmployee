@@ -1,8 +1,9 @@
-from django.http import HttpResponse
+from django.shortcuts import render
 
+import os
+
+app_name = 'gendocs'
 def index(request):
-    return HttpResponse('Привет, привет !')
-
-    
-def new(request):
-    return HttpResponse('Привет, тест!')
+    templates = os.path.join(app_name,'index.html')
+    print(templates)
+    return render(request,templates)
