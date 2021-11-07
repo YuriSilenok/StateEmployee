@@ -1,0 +1,18 @@
+<config>
+    <instance>
+        <image name = "Диплом_Марафон_2021.jpg" centerW = "1200" folder="учреждение" file="участник"/>
+        <table name="Мастерим_Итог в дипломы_2021 - Дипломы.csv">
+            <text column = "место" y ="750"  size="100" color="#547ed1" />
+            <text column = "конкурс" y ="900" size="70" color="#02419e" width="75"/>
+            <text column = "название" y ="1000" size="80" color="#02419e"/>
+            <text column = "награждается" y ="1200" size="70"/>
+            <text column = "участник" y ="1350" size="70"/>
+            <text column = "участник 2" y ="1500" size="70"/>
+            <text column = "педагог" y ="1650" size="70"/>
+            <text column = "учреждение" y ="1800" spacing="70" width="65" size="60"/>
+            <text column = "номинация" y ="2000"  size="60"/>
+
+
+        </table>
+    </instance>
+</config>
